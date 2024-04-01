@@ -1,0 +1,1 @@
+GET http://localhost:8080/api/websession?id=222&note=helloworld
