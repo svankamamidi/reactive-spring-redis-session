@@ -1,0 +1,75 @@
+// Extra plugins the Smart UI sub-project.
+//
+
+plugins {
+  id "org.springframework.boot" version "3.2.3"  
+  id "io.spring.dependency-management" version "1.1.4"
+  id 'jacoco'
+  id "de.undercouch.download" version "5.0.1"  
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'distribution'
+apply plugin: 'application'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'eclipse'
+apply plugin: 'de.undercouch.download'
+
+
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+ext["jackson-bom.version"] = "2.16.1"
+ext["json-path.version"] = "2.9.0"
+ext["spring-framework.version"] = "6.1.5"
+
+repositories {
+  mavenLocal()
+//  maven { url "https://repo.spring.io/snapshot" }
+//  maven { url "https://repo.spring.io/milestone" }
+  //maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+}
+
+dependencyManagement {
+  imports {
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2023.0.0'
+  }
+}
+
+dependencies {      
+
+  implementation "org.springframework.boot:spring-boot-starter-security", 
+    "org.springframework.boot:spring-boot-starter-oauth2-resource-server", 
+  	"org.springframework.boot:spring-boot-starter-webflux",
+    "org.springframework.cloud:spring-cloud-starter-gateway",
+    "org.springframework.session:spring-session-core",
+    "org.springframework:spring-context-support",
+    "org.springframework.boot:spring-boot-starter-data-redis",
+    "org.springframework.session:spring-session-data-redis",
+    "org.slf4j:slf4j-ext", 
+    "org.springframework.boot:spring-boot-starter-aop"          
+ 
+  implementation "net.logstash.logback:logstash-logback-encoder:7.4"
+  implementation "org.springframework.hateoas:spring-hateoas:2.1.2"
+  implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0"
+  
+  testImplementation 'org.junit.platform:junit-platform-launcher'
+  annotationProcessor "org.projectlombok:lombok"
+  compileOnly "org.projectlombok:lombok"
+  testImplementation "org.springframework.boot:spring-boot-starter-test",
+      "com.squareup.okhttp3:okhttp:4.10.0",
+      "com.squareup.okhttp3:mockwebserver:4.10.0",
+      "io.projectreactor:reactor-test"
+
+  testCompileOnly "org.projectlombok:lombok"
+  testAnnotationProcessor "org.projectlombok:lombok"
+    
+}
+
+tasks.withType(JavaCompile) {
+ options.incremental = true
+}
+
+compileJava
